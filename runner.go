@@ -11,11 +11,11 @@ func main() {
 	flag.Parse()
 
 	var result int;
-	for i := 0; i < len(flag.Args()); i++ {
-		problem, err := strconv.Atoi(flag.Args()[i])
+	for _, problem := range flag.Args() {
+		problem, err := strconv.Atoi(problem)
 	
 		if err != nil {
-			log.Printf("Cannot interpret %v. Skipping.\n", flag.Args()[i])
+			log.Printf("Cannot interpret %v. Skipping.\n", problem)
 			continue
 		}
 
@@ -26,6 +26,8 @@ func main() {
 		case 2:
 			isEven := func(n int) bool { return n % 2 == 0 }
 			result = PE002(4000000, isEven)
+		case 3:
+			result = PE003(600851475143)
 		default:
 			log.Printf("Do not have a solution for #%03d. Skipping.\n", problem)
 			continue

@@ -35,3 +35,21 @@ func BenchmarkPE002(b *testing.B) {
 		PE002(4000000, isEven)
 	}
 }
+
+// ===== Problem 003 ==============================================
+
+const n003 = 600851475143
+
+func TestPE003(t *testing.T) {
+	got := PE003(n003)
+	want := 6857
+	if got != want {
+		t.Errorf("PE003(%d) = %v // want %v", n003, got, want)
+	}
+}
+
+func BenchmarkPE003(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		PE003(n003)
+	}
+}

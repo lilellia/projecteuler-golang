@@ -1,7 +1,12 @@
 package main
 
 import (
+	"bufio"
+	"errors"
+	"log"
 	"math"
+	"os"
+	"strconv"
 )
 
 // GCD returns the greatest common divisor of two numbers.
@@ -43,4 +48,69 @@ func SumOfPowers(n int, p int) int {
 		return int(result)
 	}
 	
+}
+
+func MinMax(arr []int) (int, int, error) {
+	if len(arr) == 0 {
+		return 0, 0, errors.New("cannot find min/max of an empty slice")
+	}
+
+	min, max := arr[0], arr[0]
+	for _, val := range arr {
+		if val < min {
+			min = val
+		}
+		if val > max {
+			max = val
+		}
+	}
+
+	return min, max, nil
+}
+
+
+func PrimesLessThan(limit int) []int {
+	file, err := os.Open("primes.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	primes := []int{};
+	for scanner.Scan() {
+		p, err := strconv.Atoi(scanner.Text())
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if p >= limit {
+			return primes
+		}
+
+		primes = append(primes, p)
+	}
+
+	log.Printf("PrimesLessThan was requested primes up to %d, but the primes file was exhausted before that limit", limit)
+	return primes
+}
+
+// PrimeFactorization returns the prime factorization of n, as a map[int]int
+// Example: 28 --> {2:2, 7:1}
+func PrimeFactorization(n int) map[int] int {
+	pf := make(map[int] int)
+
+	primes := PrimesLessThan(100000)
+	for _, p := range primes {
+		if n == 1 {
+			return pf
+		}
+
+		for n % p == 0 {
+			pf[p] += 1
+			n /= p
+		}
+	}
+
+	return pf
 }
